@@ -15,7 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, re_path
+from django.urls import path, re_path, include
 from community.views import *
 
 urlpatterns = [
@@ -25,5 +25,7 @@ urlpatterns = [
     re_path('list/', list, name='list'),
     re_path(r'^view/(?P<num>[0-9]+)/$', view, name='view'),
     re_path(r'^delete/(?P<num>[0-9]+)/$', delete, name='delete'),
-    re_path(r'^updateform/(?P<num>[0-9]+)/$', updateform, name='updateform')
+    re_path(r'^updateform/(?P<num>[0-9]+)/$', updateform, name='updateform'),
+
+    path('polls/', include('polls.urls')),
 ]
