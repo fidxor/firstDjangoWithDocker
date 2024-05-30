@@ -1,0 +1,27 @@
+version: "3"
+
+services:
+  sqldb:
+    image: mysql
+    volumes:
+      - ./data/db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: dkagh1234
+      MYSQL_DATABASE: db_community
+    ports:
+      - "3306:3306"
+  web:
+    build: .
+    command: python3 manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    environment:
+      MYSQL_NAME: db_community
+      MYSQL_USER: root
+      MYSQL_PASSWORD: dkagh1234
+      MYSQL_HOST: sqldb
+      MYSQL_PORT: 3306
+    depends_on:
+      - sqldb
