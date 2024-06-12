@@ -26,20 +26,21 @@ SECRET_KEY = 'django-insecure-znkl8@l))c%+)=zxwrr0+@d9nxea!mq*%e4!djkx1c$0gz%_)a
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1", "0.0.0.0", "*"]
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
 
-INSTALLED_APPS = [    
+INSTALLED_APPS = [
+    'polls.apps.PollsConfig',
+    'books',
+    'community',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'polls.apps.PollsConfig',
-    'community',
 ]
 
 MIDDLEWARE = [
@@ -57,7 +58,7 @@ ROOT_URLCONF = 'tutorial.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

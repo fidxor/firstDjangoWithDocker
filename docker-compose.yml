@@ -12,7 +12,6 @@ services:
       - "3306:3306"
   web:
     build: .
-    command: python3 manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/code
     ports:
@@ -25,3 +24,4 @@ services:
       MYSQL_PORT: 3306
     depends_on:
       - sqldb
+    command: ["./wait-for-it.sh", "sqldb:3306", "--timeout=600", "--strict", "--", "python", "manage.py", "runserver", "0.0.0.0:8000"]
