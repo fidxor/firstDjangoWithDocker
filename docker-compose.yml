@@ -1,6 +1,13 @@
 version: "3"
 
 services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginxConf:/etc/nginx/conf.d
+      - ./static:/var/www/static
   sqldb:
     image: mysql
     volumes:
@@ -14,8 +21,8 @@ services:
     build: .
     volumes:
       - .:/code
-    ports:
-      - "8000:8000"
+    ports:      
+      - "8080:8080"
     environment:
       MYSQL_NAME: db_community
       MYSQL_USER: root
@@ -24,4 +31,6 @@ services:
       MYSQL_PORT: 3306
     depends_on:
       - sqldb
-    command: ["./wait-for-it.sh", "sqldb:3306", "--timeout=600", "--strict", "--", "python", "manage.py", "runserver", "0.0.0.0:8000"]
+    entrypoint: sh -c "./wait-for-it.sh sqldb:3306 --timeout=600 --strict && gunicorn --bind 0.0.0.0:8080 tutorial.wsgi:application"
+    # command: sh -c "./wait-for-it.sh sqldb:3306 --timeout=600 --strict && python manage.py runserver 0.0.0.0:8000 && gunicorn --bind 0.0.0.0:8080 tutorial.wsgi:application"
+    # command: ["./wait-for-it.sh", "sqldb:3306", "--timeout=600", "--strict", "--", "python", "manage.py", "runserver", "0.0.0.0:8000", "&&", "gunicorn", "--bind", "0.0.0.0:8080", "tutorial.wsgi:application"]
